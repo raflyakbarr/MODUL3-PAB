@@ -1,64 +1,132 @@
-import { useRef, useState } from "react";
-import { View, DrawerLayoutAndroid, StatusBar, Modal, Text } from "react-native";
-import Header from "./components/header";
-import Button from "./components/button";
-import Separator from "./components/separator";
-import List from "./screens/list";
-import Article from "./screens/article";
+import { FlatList, Image, Text, TouchableOpacity, View, StyleSheet, Modal } from "react-native";
+import Button from "../components/button";
+  
+  import { useState } from "react";
+  // Dummmy Data (Array of Object)
+  const datas = [
+    {
+      id: 1,
+      title:
+        "Dorong Pengembangan UMKM, IT Telkom Surabaya Gandeng UD Rozi dalam Pembuatan Website",
+      image:
+        "https://ittelkom-sby.ac.id/wp-content/uploads/2022/10/Salinan-IMG_0823-768x512.jpg",
+    },
+    {
+      id: 2,
+      title: "Mahasiswa ITTelkom Surabaya Menang Kompetisi di New Delhi",
+      image:
+        "https://ittelkom-sby.ac.id/wp-content/uploads/2022/10/asdfghjk-768x492.jpg",
+    },
+    {
+      id: 3,
+      title:
+        "Benarkah Generasi Baru Generasi Strawberi? Ayo Belajar Growth Mindset dari Kampus ITTelkom Surabaya",
+      image:
+        "https://ittelkom-sby.ac.id/wp-content/uploads/2022/10/asdfghkl-768x472.jpg",
+    },
+    {
+      id: 4,
+      title: "4 Industri Tahan Resesi! Pastikan Kemampuanmu Termasuk Di Dalamnya",
+      image:
+        "https://ittelkom-sby.ac.id/wp-content/uploads/2022/10/mbacay-768x512.jpg",
+    },
+    {
+      id: 5,
+      title:
+        "Selamat Datang Mahasiswa Baru, PKKMB ITTelkom Surabaya Berlangsung Secara Luring",
+      image:
+        "https://ittelkom-sby.ac.id/wp-content/uploads/2022/09/DSC_1931-768x512.jpg",
+    },
+    {
+      id: 6,
+      title:
+        "Dorong Pengembangan UMKM, IT Telkom Surabaya Gandeng UD Rozi dalam Pembuatan Website",
+      image:
+        "https://ittelkom-sby.ac.id/wp-content/uploads/2022/10/Salinan-IMG_0823-768x512.jpg",
+    },
+    {
+      id: 7,
+      title: "Mahasiswa ITTelkom Surabaya Menang Kompetisi di New Delhi",
+      image:
+        "https://ittelkom-sby.ac.id/wp-content/uploads/2022/10/asdfghjk-768x492.jpg",
+    },
+    {
+      id: 8,
+      title:
+        "Benarkah Generasi Baru Generasi Strawberi? Ayo Belajar Growth Mindset dari Kampus ITTelkom Surabaya",
+      image:
+        "https://ittelkom-sby.ac.id/wp-content/uploads/2022/10/asdfghkl-768x472.jpg",
+    },
+    {
+      id: 9,
+      title: "4 Industri Tahan Resesi! Pastikan Kemampuanmu Termasuk Di Dalamnya",
+      image:
+        "https://ittelkom-sby.ac.id/wp-content/uploads/2022/10/mbacay-768x512.jpg",
+    },
+    {
+      id: 10,
+      title:
+        "Selamat Datang Mahasiswa Baru, PKKMB ITTelkom Surabaya Berlangsung Secara Luring",
+      image:
+        "https://ittelkom-sby.ac.id/wp-content/uploads/2022/09/DSC_1931-768x512.jpg",
+    },
+  ];
+  
+  // Functional Component
+  const List = () => {
+    // Arrow Function with destructured argument
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const toggleModal = () => {
+      setIsModalVisible(!isModalVisible);
+    }
 
-// Functional Component
-const App = () => {
-  // State Declaration
-  const [modalVisible, setModalVisible] = useState(false);
-  const [page, setPage] = useState("list");
-  // Ref Declaration
-  const drawer = useRef(null);
-
-  // Arrow Function inside Functional Component
-  const changePage = (drawer, pageName) => {
-    // Close Drawer
-    drawer.current.closeDrawer();
-    // Change state value
-
-    setPage(pageName);
-  };
-
-  // Arrow Function inside Functional Component
-  const navigationView = () => (
-    <View style={{ padding: 30, backgroundColor: "#222222", flex: 1 }}>
-      <Button text="List" onPress={() => changePage(drawer, "list")} />
-      <Separator height={30} />
-      <Button text="Article" onPress={() => changePage(drawer, "article")} />
-      <Separator height={30} />
-      <Button text="Close" onPress={() => drawer.current.closeDrawer()} />
-      <Separator height={30} />
-      <Button text="Buka Modal" onPress={() => setModalVisible(true)} />
-      <Separator height={30} />
-    </View>
-  );
-
-  return (
-    <DrawerLayoutAndroid
-      ref={drawer}
-      drawerWidth={300}
-      drawerPosition="left"
-      renderNavigationView={navigationView}
-    >
-      <StatusBar style="light" backgroundColor="#AA0002" />
-      <View>
-        <Header drawer={drawer} />
-        {page == "list" ? <List /> : page == "article" ? <Article /> : null}
-      </View>
-       <Modal visible={modalVisible} animationType="slide" transparent={false}>
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <View style={{ backgroundColor: "white", padding: 20, borderRadius: 10 }}>
-            <Text>Konten Modalt</Text>
-            <Button text="Tutup Modal" onPress={() => setModalVisible(false)} />
+    const renderItem = ({ item }) => {
+      return (
+        <TouchableOpacity style={styles.view} onPress = {toggleModal}>
+          <View>
+            <Image source={{ uri: item.image }} style={styles.image} />
+            <Text style={styles.text}>{item.title}</Text>
+            <Modal
+              animationType="slide" 
+              transparent={false}      
+              visible={isModalVisible}>
+              <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+              <View style={{ backgroundColor: "white", padding: 100, borderRadius: 10, }}>
+                <Text>Rafly Akbar Rafsanjani adalah mahasiswa Institut Teknologi Telkom Surabaya</Text>
+              <Button text="Tutup Modal" onPress={toggleModal} />
+              </View>
+              </View>
+            </Modal>
           </View>
-        </View>
-      </Modal>
-    </DrawerLayoutAndroid>
-  );
-};
-
-export default App;
+        </TouchableOpacity>
+      );
+    };
+  
+    return (
+      <FlatList
+        data={datas}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
+    );
+  };
+  
+  // Styles
+  const styles = StyleSheet.create({
+    view: {
+      padding: 15,
+      borderBottomColor: "#dddddd",
+      borderBottomWidth: 1,
+    },
+    image: {
+      height: 200,
+      width: null,
+    },
+    text: {
+      fontSize: 18,
+      paddingTop: 10,
+    },
+  });
+  
+  export default List;
+  
